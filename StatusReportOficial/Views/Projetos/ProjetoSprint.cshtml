@@ -1,8 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@model Tuple<StatusReportOficial.Models.Projetos, StatusReportOficial.Models.BurnDown, IEnumerable<StatusReportOficial.Models.BurnDown>, StatusReportOficial.Models.Sprints>
+
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title Status Report - Sprint</title>
+
+    @Scripts.Render("~/bundles/modernizr")
 
     <link rel="shortcut icon" href="/Content/img/icone.png">
     <link rel="stylesheet" type="text/css" href="~/Content/CSS/estilo.css">
@@ -14,10 +19,7 @@
     <script src="~/Scripts/Chart.js"></script>
 
 </head>
-
-@model Tuple<StatusReportOficial.Models.Projetos, StatusReportOficial.Models.BurnDown, IEnumerable<StatusReportOficial.Models.BurnDown>, StatusReportOficial.Models.Sprints >
-
-<body >
+<body>
 
     <div class="container-fluid">
         <div id="menu">
@@ -79,7 +81,7 @@
                         {
                             @Html.AntiForgeryToken()
 
-                            @Html.ValidationSummary(true)
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                             //logica para alimentar dropDownList com dias ainda não cadastrados
                             var cbDias = new List<int>();
@@ -104,9 +106,13 @@
 
                             <div style="text-align:center">
                                 @Html.DropDownListFor(model => model.Item2.dia_sprint, itemList, "-- Selecione o dia --");
+                                @Html.ValidationMessageFor(model => model.Item2.dia_sprint, "", new { @class = "text-danger" })
                             </div>
-                            @Html.TextBoxFor(model => model.Item2.qtd_reazalidas, new { @placeholder = "Tarefas Realizadas", @id = "realizadas", @class = "cliente" })
 
+                            <div>
+                                @Html.TextBoxFor(model => model.Item2.qtd_reazalidas, new { @placeholder = "Tarefas Realizadas", @id = "realizadas", @class = "cliente", @Value = String.Empty })
+                                @Html.ValidationMessageFor(model => model.Item2.qtd_reazalidas, "", new { @class = "text-danger" })
+                            </div>
                             <button type="button" class="voltar" id="voltar" data-dismiss="modal">Voltar</button>
 
                             <button id="Cadastrar" type="submit" value="CadastrarBurnDown">Cadastrar</button>
@@ -154,7 +160,8 @@
                             <div style="text-align:center">
                                 @Html.DropDownListFor(model => model.Item2.dia_sprint, itemList, "-- Selecione o Dia --");
                             </div>
-                            @Html.TextBoxFor(model => model.Item2.qtd_reazalidas, new { @placeholder = "Tarefas Realizadas", @id = "realizadas", @class = "cliente" })
+                            @Html.TextBoxFor(model => model.Item2.qtd_reazalidas, new { @placeholder = "Tarefas Realizadas", @id = "realizadas", @class = "cliente", @Value = String.Empty })
+                            @Html.ValidationMessageFor(model => model.Item2.qtd_reazalidas, "", new { @class = "text-danger" })
 
                             <button type="button" class="voltar" id="voltar2" data-dismiss="modal">Voltar</button>
 
@@ -198,7 +205,7 @@
                         decimal qtd_tarefas = Model.Item4.qtd_tarefas;
 
                         decimal dias = Model.Item4.dias;
-                        
+
                         for (int i = 0; i < Model.Item4.dias + 1; i++)
                         {
                             array_dias.Add(dias_grafico);
@@ -273,10 +280,16 @@
             }
         );
 
-        </script>
+    </script>
 
     <script src="~/Scripts/menuHam.js"></script>
 
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 
 </body>
 </html>

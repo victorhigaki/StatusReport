@@ -10,11 +10,17 @@ namespace StatusReportOficial.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public string nomeProjeto { get; set; }
+
+        [Required]
         public string cliente { get; set; }
 
+        [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public string dataInicio { get; set; }
+
+        [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public string dataFim { get; set; }
 
@@ -22,13 +28,13 @@ namespace StatusReportOficial.Models
 
         public virtual ICollection<Sprints> Sprints { get; set; }
 
-          public Projetos()
-          {
-              Usuarios = new HashSet<Usuarios>();
+        public Projetos()
+        {
+            Usuarios = new HashSet<Usuarios>();
 
-              Sprints = new HashSet<Sprints>();
+            Sprints = new HashSet<Sprints>();
 
-          }
+        }
 
     }
 }
