@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title Status Report - Projeto</title>
+
+    <link rel="shortcut icon" href="/Content/img/icone.png">
+
+    <link rel="stylesheet" type="text/css" href="/Content/CSS/estilo.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+
+@model Tuple<StatusReportOficial.Models.Projetos, IEnumerable<int>, StatusReportOficial.Models.Sprints>
+
+<body>
+
+    <div class="container-fluid">
+
+        <div id="menu" class="col-md-12">
+            <img id="resource" src="/Content/img/Logo.png">
+            <div class="menu">
+                <input id="check" type="checkbox" name="check">
+                <label onclick="OpenClose()" for="check"></label>
+                <span></span>
+
+            </div>
+        </div>
+        <div id="painel">
+            <a onclick=history.go(-1)>Voltar</a>
+            <a href="">Configurações</a>
+            <a href="">Ajuda</a>
+            <a href="">Sobre...</a>
+            <a href="@Url.Action("Logoff", "Usuarios")">Sair</a>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- ProjetoX -->
+                <img id="banner" src="/Content/img/banner.jpg">
+                <div id="descicao">
+
+                    <h1>@Html.DisplayFor(modelItem => modelItem.Item1.nomeProjeto)</h1>
+
+                    <h2>Data Início: @Html.DisplayFor(modelItem => modelItem.Item1.dataInicio)</h2>
+
+                    <h2>Data Término: @Html.DisplayFor(modelItem => modelItem.Item1.dataFim)</h2><br>
+
+                    <h2>Cliente: @Html.DisplayFor(modelItem => modelItem.Item1.cliente)</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="title">
+                    <h1>Sprints</h1>
+                </div>
+            </div>
+        </div>
+
+        <div id="btnCada" class="espacamento">
+            <button id="btnSprint" class="Projeto" data-toggle="modal" data-target="#telaModal"><img id="Cada" src="/Content/img/icon2.png"><p class="CPre">Cadastrar uma Sprint</p></button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="telaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog tela-projeto" role="document">
+                <div class="modal-content">
+
+                    <p class="modal-title" id="CPre1">Cadastrar uma Sprint</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <div class="modal-body">
+                        @using (Html.BeginForm("CadastrarSprint", "Sprints", new { idProjeto = Model.Item1.Id }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true)
+
+                            @Html.TextBoxFor(model => model.Item3.nome, new { @placeholder = "Nome da Sprint", @id = "nome-sprint", @class = "cliente" });
+
+                            @Html.TextBoxFor(model => model.Item3.qtd_tarefas, new { @placeholder = "Quantidade de Tarefas", @id = "qtd-tarefas", @class = "cliente", @Value = string.Empty })
+
+                            @Html.TextBoxFor(model => model.Item3.dias, new { @placeholder = "Quantidade Dias", @id = "qtd-tarefas", @class = "cliente", @Value = string.Empty })
+
+                            @Html.TextBoxFor(model => model.Item3.data_inicio, new { @type = "date", @id = "data-inicio", @class = "cliente" })
+
+                            @Html.TextBoxFor(model => model.Item3.data_fim, new { @type = "date", @id = "data-fim", @class = "cliente" })
+
+                            <button type="button" class="voltar" id="voltar" data-dismiss="modal">Voltar</button>
+
+                            <button id="Cadastrar" type="submit" value="CadastrarSprint">Cadastrar</button>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        @foreach (var sprint in Model.Item1.Sprints)
+        {
+            <div class="espacamento">
+                <div style="float:left; padding-right: 20px;">
+                    <a href="@Url.Action("ProjetoSprint", "Projetos", new {idProjeto = Model.Item1.Id, idSprint = sprint.Id})">
+                        <button id="@sprint.Id" class="Projeto" value="ProjetoSprint">
+                            <p class="CPre" id="0cont-btn-prj">
+                                SPRINT : @Html.DisplayFor(modelItem => sprint.nome)
+                            </p>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <script src="~/Scripts/menuHam.js"></script>
+
+</body>
+</html>

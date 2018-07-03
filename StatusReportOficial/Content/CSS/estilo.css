@@ -1,0 +1,358 @@
+﻿/******************** GERAL ******************************/
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100% !important;
+    height: 100%;
+    overflow-x: hidden;
+    margin-left: -7% !important;
+}
+
+    /******************** ESTILO - BEM-VINDO *********************/
+
+    #BVindo {
+        color: #0473a3;
+        margin:100px 0px 40px 60px;
+        border-bottom: 3px solid #0473a3;
+    }
+
+.espacamento {
+    margin-left: 54px !important;
+}
+
+    .btnCada {
+        width: 200px;
+        height: 200px;
+        margin-right: 25px;
+        float: left;
+    }
+
+
+    button.Projeto {
+        background: #0473a3;
+        width: 200px;
+        height: 200px;
+        border-style: solid;
+        border-width: 3px;
+        border-color: #5ebfea;
+        box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.3), inset 0 0 60px #17465a;
+        cursor: pointer;
+        margin: 25px 25px 0px 0px;
+    }
+
+    img#Cada {
+        width: 100px;
+        padding-top: 10px;
+    }
+
+    p.CPre {
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 0 0 0;
+    }
+
+    p#cont-btn-prj {
+        margin-top: 75%;
+        margin-bottom: -10px;
+    }
+
+
+    /************************ ESTILO - FIXAR ****************************/
+
+
+    #menu {
+        background: #000000;
+        height: 56px;
+        width: 1400px;
+        margin-top: -8px;
+        margin-left: -28px;
+        margin-right: -8px;
+        box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.3);
+        position: relative;
+    }
+
+    img#resource {
+        margin-left: 570px;
+        height: 65px;
+    }
+
+    #painel {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        background-color: #383838;
+        overflow-x: hidden;
+        transition: 0.2s;
+        padding-top: 20px;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 25px;
+        display: inherit;
+        margin-top: 13px;
+        /*margin-left: 27px;*/
+    }
+
+    /*-------menu hamburgueres-----*/
+
+    input#check {
+        border: none;
+    }
+
+    .menu {
+        width: 88px;
+        height: 88px;
+        margin: 100px auto;
+        position: relative;
+        margin-left: -1px;
+        margin-top: -59px;
+    }
+
+        .menu label {
+            width: 60%;
+            height: 57%;
+            background-color: #9e9e9e;
+            position: absolute;
+            cursor: pointer;
+            transition: all .3s linear;
+        }
+
+    #check {
+        position: absolute;
+        z-index: 1;
+        display: none;
+    }
+
+    #menu span {
+        width: 30px;
+        height: 3px;
+        top: 23px;
+        left: 10px;
+        position: absolute;
+        background-color: #fff;
+        cursor: pointer;
+        transition: all .3s linear;
+    }
+
+        #menu span:before {
+            content: '';
+            width: 30px;
+            height: 3px;
+            bottom: -8px;
+            position: absolute;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all .3s linear;
+        }
+
+        #menu span:after {
+            content: '';
+            width: 30px;
+            height: 3px;
+            top: -8px;
+            position: absolute;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all .3s linear;
+        }
+
+    #check:checked ~ span {
+        background-color: transparent;
+    }
+
+        #check:checked ~ span:before {
+            transform: translate(0px, -8px) rotate(-45deg);
+        }
+
+        #check:checked ~ span:after {
+            transform: translate(0px, 8px) rotate(45deg);
+        }
+
+    #check:checked ~ label {
+        border-radius: 0%;
+    }
+
+    /************************** ESTILO - PROJETO *********************************/
+
+    .modal .modal-dialog .modal-content {
+        background-color: #0473a3 !important;
+    }
+
+    .modal-body {
+        margin-left: 30px !important;
+    }
+
+    input {
+        width: 350px !important;
+        height: 30px !important;
+    }
+
+
+    p#CPre1 {
+        color: white;
+        margin: 19px 61px 33px 61px;
+        padding: 5px 59px 5px 61px;
+        border-bottom: 2px solid #f3f4f5;
+        text-align: center;
+    }
+
+    p#CPre2 {
+        color: white;
+        margin: 15px 173px 4px 165px;
+    }
+
+    .cliente {
+        width: 276px;
+        height: 22px;
+        margin: 0 0 6px 15%;
+        font-size: 14px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    ::placeholder {
+        color: black;
+    }
+
+    .cliente2 {
+        background: white;
+        width: 350px;
+        /*height: 18px;*/
+        margin: 0 0 0px 82px;
+        padding: 5px 0 5px 0px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .datas {
+        width: 180px !important;
+        margin: 0px;
+        text-align: center;
+    }
+
+    .data-fim {
+        margin-left: 127px !important;
+    }
+
+    button#Cadastrar {
+        width: 140px;
+        height: 37px;
+        margin: 30px 0 4px 17%;
+        color: white;
+        background: #01618a;
+        font-size: 16px;
+        font-weight: bold;
+        border-color: white;
+    }
+
+    button.voltar {
+        width: 140px;
+        height: 37px;
+        margin: 3px 0 4px 12%;
+        color: white;
+        background: #01618a;
+        font-size: 16px;
+        font-weight: bold;
+        border-color: white;
+    }
+
+    div#quadro {
+        height: 34%;
+        width: 65%;
+        margin-left: 70px;
+        overflow: auto;
+    }
+
+    /**************************** ESTILO - PROJETOX ************************/
+
+    img#banner {
+        width: 1442px;
+        height: 270px;
+        margin-left: -30px;
+    }
+
+    #descicao {
+        margin-top: -250px;
+        color: #0073ab;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+    }
+
+        #descicao h1 {
+            font-size: 58px;
+            margin-bottom: -10px;
+        }
+
+        #descicao h2 {
+            margin-bottom: -10px;
+        }
+
+    div#title {
+        background: #0073ab;
+        width: 1130%;
+        height: 110px;
+        margin-left: -25px;
+        margin-right: -8px;
+        margin-top: 88px;
+    }
+
+    #title h1 {
+        margin-top: 43px;
+        margin-left: 75px;
+        color: #ffffff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 40px;
+        padding-top: 27px;
+        padding-left: 10px;
+    }
+
+    p {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 22px;
+        margin: 70px 70px 70px 70px;
+    }
+
+    /*img total*/
+
+    img#total {
+        margin: 40px 0 25px 75px;
+    }
+
+    /*tabela*/
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 85%;
+        margin: 80px 0 0 100px;
+        font-weight: bold;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background: #ff8300;
+        color: white;
+    }
+
+    td {
+        height: 120px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }

@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Staus Report - Login</title>
+    
+    @section css {
+        <link rel="stylesheet" href="~/Content/css/login.css" />
+    }
+
+</head>
+<!-- Login -->
+<body>
+    
+    @model StatusReportOficial.Models.Usuarios
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <img class="imgPrincipal" src="~/Content/img/Status Report.jpg">
+            </div>
+
+            <div class="col-md-4"></div>
+            <div id="login">
+
+                <div class="col-md-4">
+
+                    @using (Html.BeginForm("Login", "Usuarios"))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <hr />
+                            @Html.ValidationSummary(true)
+
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(model => model.Login, new { @placeholder = "Login", @id = "usuario", @onchange = "onChangeLogin();" })
+                            </div>
+
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(model => model.Senha, new { @placeholder = "Senha", @id = "senha", @type = "Password" })
+                            </div>
+
+                            <div class="col-md-4">
+                                <button type="submit" id="entrar" value="Login" class="button-entrar"> Entrar</button>
+                            </div>
+                        </div>
+                    }
+
+                    <p id="MSenha"><a href="#">Esqueci minha senha!</a></p>
+                    <p id="MUsuario"><a href="#">Esqueci meu usuário!</a></p>
+                </div>
+
+                </div>
+
+
+        </div>
+    </div>
+
+    @section scripts {
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                $('#entrar').click(function () {
+
+                    //entra Login e senha se erro ou certo
+                    var usuario = $('#usuario').val();
+                    usuario = usuario.toLowerCase();
+
+                    var senha = $('#senha').val();
+                    senha = senha.toLowerCase();
+
+                    if (usuario != "teste" && senha != "123") {
+                        alert("Dados incorretos, tente novamente");
+                    }
+
+                    // // Clicar Entrar (Techado)
+
+                    var input = $("#senha");
+
+                    input.addEventListener("keyup", function (event) {
+                        event.preventDefault();
+
+                        if (event.keyCode === 13) {
+                            $("#entrar").click();
+                        }
+                    });
+
+                });
+
+            });
+        </script>
+    }
+</body>
+</html>

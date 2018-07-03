@@ -1,0 +1,58 @@
+﻿@model StatusReportOficial.Models.Projetos
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Projetos</h4>
+    	<hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.nomeProjeto)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.nomeProjeto)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.cliente)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.cliente)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.dataInicio)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.dataInicio)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.dataFim)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.dataFim)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

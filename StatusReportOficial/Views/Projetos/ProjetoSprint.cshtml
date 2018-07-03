@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title Status Report - Sprint</title>
+
+    <link rel="shortcut icon" href="/Content/img/icone.png">
+    <link rel="stylesheet" type="text/css" href="~/Content/CSS/estilo.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="~/Scripts/Chart.js"></script>
+
+</head>
+
+@model Tuple<StatusReportOficial.Models.Projetos, StatusReportOficial.Models.BurnDown, IEnumerable<StatusReportOficial.Models.BurnDown>, StatusReportOficial.Models.Sprints >
+
+<body >
+
+    <div class="container-fluid">
+        <div id="menu">
+            <img id="resource" src="/Content/img/Logo.png">
+            <div class="menu">
+                <input id="check" type="checkbox" name="check">
+                <label onclick="OpenClose()" for="check"></label>
+                <span></span>
+            </div>
+        </div>
+
+        <div id="painel">
+            <a onclick=history.go(-1)>Voltar</a>
+            <a href="">Configurações</a>
+            <a href="">Ajuda</a>
+            <a href="">Sobre...</a>
+            <a href="@Url.Action("Logoff", "Usuarios")">Sair</a>
+
+        </div>
+
+        <!-- ProjetoX -->
+        <img id="banner" src="/Content/img/banner.jpg">
+        <div id="descicao">
+
+            <h1>@Html.DisplayFor(modelItem => modelItem.Item1.nomeProjeto)</h1>
+
+            <h2>Data Início: @Html.DisplayFor(modelItem => modelItem.Item1.dataInicio)</h2>
+
+            <h2>Data Término: @Html.DisplayFor(modelItem => modelItem.Item1.dataFim)</h2><br>
+
+            <h2>Cliente: @Html.DisplayFor(modelItem => modelItem.Item1.cliente)</h2>
+        </div>
+        <div id="title">
+            <h1>Burn Down - Sprint: @Html.DisplayFor(modelItem => modelItem.Item4.nome)</h1>
+        </div>
+
+        <div class="espacamento">
+            <div id="btnCada">
+                <button id="btnProjeto" data-toggle="modal" data-target="#modalCadastro" class="Projeto"><img id="Cada" src="/Content/img/icon2.png"><p class="CPre">Cadastrar BurnDown</p></button>
+                <button id="btnAtualiza" data-toggle="modal" data-target="#modalAtualizar" class="Projeto"><img id="Cada" src="/Content/img/icon2.png"><p class="CPre">Editar BurnDown</p></button>
+            </div>
+        </div>
+
+
+
+        <!-- Modal Cadastrar -->
+        <div class="modal fade" id="modalCadastro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog tela-projeto" role="document">
+                <div class="modal-content">
+
+                    <p class="modal-title" id="CPre1">Cadastrar BurnDown</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <div class="modal-body">
+
+                        @using (Html.BeginForm("CadastrarBurnDown", "BurnDowns", new { idProjeto = Model.Item1.Id, idSprint = Model.Item4.Id }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true)
+
+                            //logica para alimentar dropDownList com dias ainda não cadastrados
+                            var cbDias = new List<int>();
+                            for (var i = 1; i <= Model.Item4.dias; i++)
+                            {
+                                cbDias.Add(i);
+                            }
+
+                            foreach (var item in Model.Item3)
+                            {
+                                if (cbDias.Contains(item.dia_sprint))
+                                {
+                                    cbDias.Remove(item.dia_sprint);
+                                }
+                            }
+
+                            var itemList = new List<SelectListItem>();
+                            foreach (var item in cbDias)
+                            {
+                                itemList.Add(new SelectListItem { Text = item.ToString(), Value = item.ToString() });
+                            }
+
+                            <div style="text-align:center">
+                                @Html.DropDownListFor(model => model.Item2.dia_sprint, itemList, "-- Selecione o dia --");
+                            </div>
+                            @Html.TextBoxFor(model => model.Item2.qtd_reazalidas, new { @placeholder = "Tarefas Realizadas", @id = "realizadas", @class = "cliente" })
+
+                            <button type="button" class="voltar" id="voltar" data-dismiss="modal">Voltar</button>
+
+                            <button id="Cadastrar" type="submit" value="CadastrarBurnDown">Cadastrar</button>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Atualizar -->
+        <div class="modal fade" id="modalAtualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog tela-projeto" role="document">
+                <div class="modal-content">
+
+                    <p class="modal-title" id="CPre1">Editar BurnDown</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <div class="modal-body">
+                        @using (Html.BeginForm("AtualizarBurnDown", "BurnDowns", new { idBurnDown = Model.Item2.id, idProjeto = Model.Item1.Id, idSprint = Model.Item4.Id }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true)
+
+                            //lógica para alimentar dropDownList com dias já cadastrados
+                            var cbDias = new List<int>();
+
+                            foreach (var item in Model.Item3)
+                            {
+                                cbDias.Add(item.dia_sprint);
+                            }
+
+                            var itemList = new List<SelectListItem>();
+                            foreach (var item in cbDias)
+                            {
+                                itemList.Add(new SelectListItem { Text = item.ToString(), Value = item.ToString() });
+                            }
+                            //TESTAR ESSE AQUI
+
+                            @Html.HiddenFor(model => Model.Item2.id)
+                            <div style="text-align:center">
+                                @Html.DropDownListFor(model => model.Item2.dia_sprint, itemList, "-- Selecione o Dia --");
+                            </div>
+                            @Html.TextBoxFor(model => model.Item2.qtd_reazalidas, new { @placeholder = "Tarefas Realizadas", @id = "realizadas", @class = "cliente" })
+
+                            <button type="button" class="voltar" id="voltar2" data-dismiss="modal">Voltar</button>
+
+                            <button id="Cadastrar" type="submit" value="CadastrarBurnDown">Editar</button>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12" style="width: 115%; margin-top:30px;">
+            <canvas id="grafico" width="300" height="150"></canvas>
+        </div>
+    </div>
+
+    <script>
+
+            //EXIBE O CHART NA TELA
+            var ctx = document.getElementById("grafico");
+
+            //CRIA O GRÁFICO DE LINHAS
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+
+                data:
+                {
+                    //FOR EACH QUE VERIFICA E CRIA LIST C# COM AS INFORMAÇÕES DA SPRINT
+                    @{
+
+                        int dias_grafico = 0;
+
+                        List<int> array_dias = new List<int>();
+
+                        List<int> eixo_x_lista = new List<int>();
+
+                        List<decimal> eixo_padrao_lista = new List<decimal>();
+
+                        decimal qtd_tarefas = Model.Item4.qtd_tarefas;
+
+                        decimal dias = Model.Item4.dias;
+                        
+                        for (int i = 0; i < Model.Item4.dias + 1; i++)
+                        {
+                            array_dias.Add(dias_grafico);
+
+                            if (dias_grafico == 0)
+                            {
+                                eixo_padrao_lista.Add(Model.Item4.qtd_tarefas);
+                            }
+
+                            else
+                            {
+                                decimal ultimo_item = eixo_padrao_lista[eixo_padrao_lista.Count - 1];
+                                eixo_padrao_lista.Add(Decimal.Round((ultimo_item - (qtd_tarefas / dias)), 2) );
+                            }
+
+                            dias_grafico++;
+                        }
+
+                        dias_grafico = 0;
+
+                        eixo_x_lista.Add(Model.Item4.qtd_tarefas);
+
+                        int tarefa_realizada = 0;
+
+
+                        foreach (var item2 in Model.Item3)
+                        {
+                           tarefa_realizada += item2.qtd_reazalidas;
+                           eixo_x_lista.Add(Model.Item4.qtd_tarefas - tarefa_realizada);
+                           dias_grafico++;
+                        }
+
+
+                        //CONVERTE A LISTA PARA UM JSON QUE O JAVASCRIPT RECONHECE
+                        System.Web.Script.Serialization.JavaScriptSerializer js = new System.Web.Script.Serialization.JavaScriptSerializer();
+                        string lista_dias_json = js.Serialize(array_dias.ToArray());
+                        string lista_eixo_x_json = js.Serialize(eixo_x_lista.ToArray());
+                        string eixo_padrao_lista_json = js.Serialize(eixo_padrao_lista.ToArray());
+
+                    }
+                    //NUMERO DE DIAS DA SPRINT
+                    labels: @lista_dias_json,
+
+                    //FOR EACH QUE VERIFICA E COLOCA OS DADOS NO GRÁFICO
+                    datasets:
+                    [
+                        {
+                        //INFO DE DADOS NO EIXO X
+                        data: @lista_eixo_x_json,
+                        label: "Burndown",
+                        borderColor: "#1D36FF",
+                        fill: false
+                        },
+
+                        {
+                        data: @eixo_padrao_lista_json,
+                        label: "Linha Padrão",
+                        borderColor: "#FF0000",
+                        fill: false
+                        }
+                    ]
+
+                },
+
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Gráfico Burndown'
+                    }
+                }
+
+            }
+        );
+
+        </script>
+
+    <script src="~/Scripts/menuHam.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title Status Report - Home</title>
+
+    <link rel="shortcut icon" href="img/icone.png">
+
+    <link rel="stylesheet" type="text/css" href="~/Content/CSS/estilo.css">
+
+    <script src="~/Scripts/menuHam.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body >
+
+    <div class="container-fluid">
+        @model Tuple<StatusReportOficial.Models.Projetos, IEnumerable<StatusReportOficial.Models.Projetos>>
+
+        <div id="menu" class="col-md-12">
+            <img id="resource" src="/Content/img/Logo.png">
+            <div class="menu">
+                <input id="check" type="checkbox" name="check">
+                <label onclick="OpenClose()" for="check"></label>
+                <span></span>
+            </div>
+        </div>
+
+        <div id="painel">
+            <a href="">Configurações</a>
+            <a href="">Ajuda</a>
+            <a href="">Sobre...</a>
+            <a href="@Url.Action("Logoff", "Usuarios")">Sair</a>
+        </div>
+
+        <!-- Cadastrar um Projeto -->
+
+        <div id="BVindo">
+            @if (Session != null)
+            {
+                var nome = Session["Nome"];
+                var sobrenome = Session["Sobrenome"];
+
+                <h2>Olá @nome @sobrenome, Seja bem-vindo ao Resource Status Report&copy;</h2>
+
+            }
+
+        </div>
+
+        <div class="row" style="margin-left: 40px;">
+            <div class="btnCada col-md-4">
+                <button id="btnProjeto" class="Projeto" data-toggle="modal" data-target="#telaModal"><img id="Cada" src="/Content/img/icon01.png"><p class="CPre">Cadastrar um Projeto</p></button>
+            </div>
+        </div>
+
+        @*<div class="btnCada">
+                <button id="btnSprint" class="Projeto"><img id="Cada" src="/Content/img/icon2.png"><p class="CPre">Cadastrar uma Sprint</p></button>
+            </div>*@
+
+        @foreach (var item2 in Model.Item2)
+            {
+            <a href="@Url.Action("ProjetoDetalhes", "Projetos", new { id = item2.Id })">
+                <div class="espacamento">
+                    <div class="btnCada">
+                        <button id="@item2.Id" class="Projeto" value="ProjetoDetalhes">
+                            <p class="CPre" id="0cont-btn-prj">
+                                @Html.DisplayFor(modelItem => item2.nomeProjeto)
+                            </p>
+                        </button>
+                    </div>
+                </div>
+            </a>
+        }
+
+        <!-- Modal -->
+        <div class="modal fade" id="telaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog tela-projeto" role="document">
+                <div class="modal-content">
+
+                    <p class="modal-title" id="CPre1">Cadastrar um Projeto</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <div class="modal-body">
+
+                        @using (Html.BeginForm("CadastrarProjeto", "Projetos"))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true)
+
+                            @Html.TextBoxFor(model => model.Item1.nomeProjeto, new { @placeholder = "Nome do Projeto", @id = "nomeProjeto", @class = "cliente" })
+
+                            @Html.TextBoxFor(model => model.Item1.cliente, new { @placeholder = "Cliente", @id = "cliente", @class = "cliente" })
+
+                            <div class="cliente2">
+                                Periodo do projeto
+                                @Html.TextBoxFor(model => model.Item1.dataInicio, new { @type = "date", @id = "dataInicio", @class = "datas" })
+                                <br />
+                                @Html.TextBoxFor(model => model.Item1.dataFim, new { @type = "date", @id = "dataFim", @class = "datas data-fim" })
+                            </div>
+
+                                <button type="button" class="voltar" id="voltar" data-dismiss="modal">Voltar</button>
+
+                                <button id="Cadastrar" type="submit" value="CadastrarProjeto">Cadastrar</button>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+
+</html>
